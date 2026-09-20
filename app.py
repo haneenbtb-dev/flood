@@ -717,76 +717,59 @@ st.markdown(textwrap.dedent("""
 
 
 # -----------------------------------------------------------------------------
-# 8. جدول بيانات الشوارع العشرة الموحد (Unified Operations Matrix Table)
+# 8. جدول بيانات الشوارع الموحد (Unified Operations Matrix Table)
 # -----------------------------------------------------------------------------
 table_rows_html = ""
 
 for s in streets_data:
-    # شريط التقدم الصغير لنسبة المياه
     bar_color = s["status_color"]
-    pct_bar = f"""
-        <div style="display:inline-flex; align-items:center;">
-            <div class="mini-progress-bg">
-                <div class="mini-progress-bar" style="width:{s['pct']}%; background-color:{bar_color};"></div>
-            </div>
-            <span style="font-family:'JetBrains Mono'; font-weight:700; font-size:0.75rem; color:{bar_color};">{s['pct']}%</span>
-        </div>
-    """
-    
-    # عمق المياه
-    depth_str = f"<b style='font-family:JetBrains Mono; color:{bar_color};'>{s['depth']} سم</b>"
-    
-    # بادج الحالة
-    status_badge = f"<span class='status-pill {s['pill_class']}'>{s['status']}</span>"
-    
-    # بادج الحساس
-    sensor_badge = f"<span class='sensor-online'>🟢 {s['sensor_status']}</span>"
-    
-    table_rows_html += f"""
-        <tr>
-            <td style="font-weight:700;">
-                <span style="color:#94a3b8; font-size:0.75rem; font-family:'JetBrains Mono'; margin-left:6px;">{s['id']}</span>
-                {s['name']}
-            </td>
-            <td>{pct_bar}</td>
-            <td>{depth_str}</td>
-            <td>{status_badge}</td>
-            <td>{sensor_badge}</td>
-            <td style="font-size:0.75rem; color:#94a3b8;">{s['drainage']}</td>
-            <td style="font-size:0.75rem; color:{'#f87171' if 'مغلق' in s['closure'] else '#cbd5e1'}; font-weight:{'800' if 'مغلق' in s['closure'] else '500'};">{s['closure']}</td>
-            <td style="font-family:'JetBrains Mono'; font-size:0.74rem; color:#64748b; direction:ltr; text-align:right;">{s['last_seen']}</td>
-        </tr>
-    """
+    pct_val = s["pct"]
+    depth_val = s["depth"]
+    s_id = s["id"]
+    s_name = s["name"]
+    s_status = s["status"]
+    s_sensor = s["sensor_status"]
+    s_drainage = s["drainage"]
+    s_closure = s["closure"]
+    s_seen = s["last_seen"]
+    pill_c = s["pill_class"]
 
-st.markdown(textwrap.dedent(f"""
-    <div class="streets-table-container">
-        <div class="table-title-row">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <span style="font-size:1.2rem;">📊</span>
-                <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#f8fafc;">جدول الرصد الميداني الشامل للشوارع العشرة</h3>
-            </div>
-            <div style="font-size:0.76rem; color:#94a3b8;">
-                تحديث حي ومباشر لكافة العقد الهيدرولوجية
-            </div>
-        </div>
-        <div style="overflow-x:auto;">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>اسم الشارع والمحور الميداني</th>
-                        <th>مستوى المياه %</th>
-                        <th>عمق المياه</th>
-                        <th>حالة الشارع</th>
-                        <th>حالة الحساس</th>
-                        <th>مضخات التصريف</th>
-                        <th>الإجراء المروري والتدخل</th>
-                        <th>آخر تحديث</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {table_rows_html}
-                </tbody>
-            </table>
-        </div>
-    </div>
-"""), unsafe_allow_html=True)
+    pct_bar = f"<div style='display:inline-flex; align-items:center;'><div class='mini-progress-bg'><div class='mini-progress-bar' style='width:{pct_val}%; background-color:{bar_color};'></div></div><span style='font-family:JetBrains Mono; font-weight:700; font-size:0.75rem; color:{bar_color};'>{pct_val}%</span></div>"
+    depth_str = f"<b style='font-family:JetBrains Mono; color:{bar_color};'>{depth_val} سم</b>"
+    status_badge = f"<span class='status-pill {pill_c}'>{s_status}</span>"
+    sensor_badge = f"<span class='sensor-online'>🟢 {s_sensor}</span>"
+    closure_color = '#f87171' if 'مغلق' in s_closure else '#cbd5e1'
+    closure_weight = '800' if 'مغلق' in s_closure else '500'
+    
+    table_rows_html += (
+        f"<tr>"
+        f"<td style='font-weight:700;'><span style='color:#94a3b8; font-size:0.75rem; font-family:JetBrains Mono; margin-left:6px;'>{s_id}</span>{s_name}</td>"
+        f"<td>{pct_bar}</td>"
+        f"<td>{depth_str}</td>"
+        f"<td>{status_badge}</td>"
+        f"<td>{sensor_badge}</td>"
+        f"<td style='font-size:0.75rem; color:#94a3b8;'>{s_drainage}</td>"
+        f"<td style='font-size:0.75rem; color:{closure_color}; font-weight:{closure_weight};'>{s_closure}</td>"
+        f"<td style='font-family:JetBrains Mono; font-size:0.74rem; color:#64748b; direction:ltr; text-align:right;'>{s_seen}</td>"
+        f"</tr>"
+    )
+
+table_wrapper_html = (
+    f"<div class='streets-table-container'>"
+    f"<div class='table-title-row'>"
+    f"<div style='display:flex; align-items:center; gap:8px;'>"
+    f"<span style='font-size:1.2rem;'>📊</span>"
+    f"<h3 style='margin:0; font-size:1.05rem; font-weight:800; color:#f8fafc;'>جدول الرصد الميداني الشامل</h3>"
+    f"</div>"
+    f"<div style='font-size:0.76rem; color:#94a3b8;'>تحديث حي ومباشر لكافة العقد الهيدرولوجية</div>"
+    f"</div>"
+    f"<div style='overflow-x:auto;'>"
+    f"<table class='custom-table'>"
+    f"<thead><tr>"
+    f"<th>اسم الشارع والمحور الميداني</th><th>مستوى المياه %</th><th>عمق المياه</th><th>حالة الشارع</th><th>حالة الحساس</th><th>مضخات التصريف</th><th>الإجراء المروري والتدخل</th><th>آخر تحديث</th>"
+    f"</tr></thead>"
+    f"<tbody>{table_rows_html}</tbody>"
+    f"</table></div></div>"
+)
+
+st.markdown(table_wrapper_html, unsafe_allow_html=True)

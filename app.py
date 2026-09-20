@@ -18,10 +18,10 @@ st.set_page_config(
 # تخصيص الواجهة بتنسيق عصري داكن وخطوط عربية احترافية مع دعم اتجاه النص من اليمين لليسار (RTL)
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
-    html, body, [class*="css"], .stMarkdown, .stButton, .stSelectbox, .stSlider {
-        font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    html, body, [class*="css"], .stMarkdown, .stButton, .stSelectbox, .stSlider, .stNumberInput {
+        font-family: 'Alexandria', -apple-system, BlinkMacSystemFont, sans-serif !important;
         direction: rtl;
         text-align: right;
     }
@@ -108,7 +108,7 @@ st.markdown("""
     }
 
     .time-badge {
-        font-family: 'JetBrains Mono', 'Cairo', monospace;
+        font-family: 'JetBrains Mono', 'Alexandria', monospace;
         font-size: 0.88rem;
         color: #cbd5e1;
         background: rgba(30, 41, 59, 0.7);
@@ -144,7 +144,7 @@ st.markdown("""
     .metric-value {
         font-size: 1.75rem;
         font-weight: 900;
-        font-family: 'Cairo', 'JetBrains Mono', sans-serif;
+        font-family: 'Alexandria', 'JetBrains Mono', sans-serif;
         color: #f8fafc;
         display: flex;
         align-items: baseline;
@@ -593,7 +593,7 @@ with map_col:
         opacity=0.9,
         tooltip=folium.Tooltip(road_tooltip_msg),
         popup=folium.Popup(f"""
-            <div style="font-family:'Cairo', sans-serif; direction:rtl; text-align:right; min-width:190px;">
+            <div style="font-family:'Alexandria', 'Readex Pro', sans-serif; direction:rtl; text-align:right; min-width:190px;">
                 <h4 style="margin:0 0 5px 0; color:#0f172a;">نفق المحور الرئيسي</h4>
                 <b>عمق المياه:</b> {water_depth} سم<br>
                 <b>الحالة المرورية:</b> <span style="color:{status_color}; font-weight:bold;">{status_level}</span><br>
@@ -607,7 +607,7 @@ with map_col:
     folium.Marker(
         location=sensor_location,
         popup=folium.Popup(f"""
-            <div style="font-family:'Cairo', sans-serif; direction:rtl; text-align:right; min-width:210px;">
+            <div style="font-family:'Alexandria', 'Readex Pro', sans-serif; direction:rtl; text-align:right; min-width:210px;">
                 <h4 style="margin:0 0 4px 0; color:#1e293b;">📡 محطة الحساس الميداني #SG-402</h4>
                 <hr style="margin:4px 0;">
                 <b>نوع الحساس:</b> رادار ليزري + ألتراسونيك<br>
@@ -625,7 +625,7 @@ with map_col:
         folium.Marker(
             location=[24.7145, 46.6765],
             popup=folium.Popup(f"""
-                <div style="font-family:'Cairo', sans-serif; direction:rtl; text-align:right; min-width:220px;">
+                <div style="font-family:'Alexandria', 'Readex Pro', sans-serif; direction:rtl; text-align:right; min-width:220px;">
                     <h4 style="margin:0 0 4px 0; color:{status_color};">🚨 إنذار خطر تجمع سيول</h4>
                     <p style="margin:4px 0; font-size:13px;"><b>القياس الدقيق:</b> {water_depth} سم مياه راكدة</p>
                     <p style="margin:4px 0; font-size:13px;"><b>حالة الطريق:</b> {status_label}</p>
@@ -645,7 +645,7 @@ with map_col:
             opacity=0.95,
             tooltip="<b>المسار البديل الآمن الموصى به:</b> الطريق الدائري العلوي المرتفع",
             popup=folium.Popup("""
-                <div style="font-family:'Cairo', sans-serif; direction:rtl; text-align:right; min-width:210px;">
+                <div style="font-family:'Alexandria', 'Readex Pro', sans-serif; direction:rtl; text-align:right; min-width:210px;">
                     <h4 style="margin:0 0 4px 0; color:#0284c7;">↪️ مسار التحويلة الملاحية الآمنة</h4>
                     <b>الاسم:</b> الطريق الدائري العلوي المرتفع<br>
                     <b>حالة المسار:</b> جاف وآمن بنسبة 100%<br>

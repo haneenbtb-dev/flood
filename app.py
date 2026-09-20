@@ -904,3 +904,87 @@ table_wrapper_html = (
 )
 
 st.markdown(table_wrapper_html, unsafe_allow_html=True)
+
+# -----------------------------------------------------------------------------
+# 7. مصفوفة أمان عبور المركبات (Vehicle Clearance Matrix)
+# -----------------------------------------------------------------------------
+max_depth = max(s["depth"] for s in streets_data)
+
+def get_sedan_status(d):
+    if d < 12:
+        return ("آمن للعبور", "badge-safe", "status-safe", d / 18 * 100)
+    elif d <= 18:
+        return ("تحذير - توخَّ الحذر", "badge-caution", "status-caution", d / 18 * 100)
+    else:
+        return ("ممنوع العبور", "badge-danger", "status-danger", 100)
+
+def get_suv_status(d):
+    if d < 25:
+        return ("آمن للعبور", "badge-safe", "status-safe", d / 35 * 100)
+    elif d <= 35:
+        return ("تحذير - توخَّ الحذر", "badge-caution", "status-caution", d / 35 * 100)
+    else:
+        return ("ممنوع العبور", "badge-danger", "status-danger", 100)
+
+def get_truck_status(d):
+    if d <= 40:
+        return ("ممر مسموح", "badge-safe", "status-safe", d / 48 * 100)
+    elif d <= 48:
+        return ("تحذير - الإطارات قد تتأثر", "badge-caution", "status-caution", d / 48 * 100)
+    else:
+        return ("خطر - وقف الحركة", "badge-danger", "status-danger", 100)
+
+sedan_label, sedan_badge, sedan_card, sedan_pct = get_sedan_status(max_depth)
+suv_label, suv_badge, suv_card, suv_pct = get_suv_status(max_depth)
+truck_label, truck_badge, truck_card, truck_pct = get_truck_status(max_depth)
+
+sedan_pct_val = min(100, round(sedan_pct))
+suv_pct_val = min(100, round(suv_pct))
+truck_pct_val = min(100, round(truck_pct))
+
+matrix_html = (
+    "<div class='streets-table-container' style='margin-top:2rem;'>"
+    "<div class='table-title-row'>"
+    "<div style='display:flex; align-items:center; gap:8px;'>"
+    "<span style='font-size:1.2rem;'>🚦</span>"
+    "<h3 style='margin:0; font-size:1.05rem; font-weight:800; color:#f8fafc;'>مصفوفة أمان عبور المركبات</h3>"
+    "</div>"
+    f"<div style='font-size:0.76rem; color:#94a3b8;'>مبنية على أعلى عمق مرصود: <strong style='color:#f8fafc;'>{max_depth} سم</strong></div>"
+    "</div>"
+    "<div style='display:flex; flex-wrap:wrap; gap:1.2rem; padding:1.2rem 0;'>"
+
+    f"<div class='vehicle-card {sedan_card}' style='flex:1; min-width:220px;'>"
+    "<div style='font-size:2rem; margin-bottom:0.4rem;'>🚗</div>"
+    "<div style='font-weight:800; font-size:1rem; margin-bottom:0.2rem;'>سيارات السيدان والصغيرة</div>"
+    "<div style='font-size:0.78rem; color:#94a3b8; margin-bottom:0.8rem;'>حد الأمان: 12 سم | تحذير: 18 سم | ممنوع: +18 سم</div>"
+    "<div class='clearance-track'>"
+    f"<div class='clearance-fill' style='width:{sedan_pct_val}%;'></div>"
+    "</div>"
+    f"<div style='margin-top:0.6rem;'><span class='badge-pill {sedan_badge}'>{sedan_label}</span></div>"
+    "</div>"
+
+    f"<div class='vehicle-card {suv_card}' style='flex:1; min-width:220px;'>"
+    "<div style='font-size:2rem; margin-bottom:0.4rem;'>🚙</div>"
+    "<div style='font-weight:800; font-size:1rem; margin-bottom:0.2rem;'>سيارات الدفع الرباعي (SUV & 4x4)</div>"
+    "<div style='font-size:0.78rem; color:#94a3b8; margin-bottom:0.8rem;'>حد الأمان: 25 سم | تحذير: 35 سم | ممنوع: +35 سم</div>"
+    "<div class='clearance-track'>"
+    f"<div class='clearance-fill' style='width:{suv_pct_val}%;'></div>"
+    "</div>"
+    f"<div style='margin-top:0.6rem;'><span class='badge-pill {suv_badge}'>{suv_label}</span></div>"
+    "</div>"
+
+    f"<div class='vehicle-card {truck_card}' style='flex:1; min-width:220px;'>"
+    "<div style='font-size:2rem; margin-bottom:0.4rem;'>🚚</div>"
+    "<div style='font-weight:800; font-size:1rem; margin-bottom:0.2rem;'>الشاحنات وفرق الطوارئ والدفاع المدني</div>"
+    "<div style='font-size:0.78rem; color:#94a3b8; margin-bottom:0.8rem;'>ممر مسموح: حتى 40 سم | تحذير: 48 سم | خطر: +48 سم</div>"
+    "<div class='clearance-track'>"
+    f"<div class='clearance-fill' style='width:{truck_pct_val}%;'></div>"
+    "</div>"
+    f"<div style='margin-top:0.6rem;'><span class='badge-pill {truck_badge}'>{truck_label}</span></div>"
+    "</div>"
+
+    "</div>"
+    "</div>"
+)
+
+st.markdown(matrix_html, unsafe_allow_html=True)

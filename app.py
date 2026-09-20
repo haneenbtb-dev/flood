@@ -10,7 +10,7 @@ from streamlit_folium import st_folium
 # 1. إعدادات الصفحة والتصميم الهندسي لمركز قيادة العمليات (Command Center)
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="المنظومة المركزية للرصد الهيدرولوجي وإدارة السيول",
+    page_title="مرصاد",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -521,7 +521,7 @@ st.markdown(textwrap.dedent(f"""
         <div class="ops-title-group">
             <span class="ops-logo">🛡️</span>
             <div>
-                <h1 class="ops-title">المنظومة المركزية للرصد الهيدرولوجي وإدارة السيول</h1>
+                <h1 class="ops-title">مِـرْصَـاد</h1>
                 <p class="ops-subtitle">غرفة القيادة والتحكم الموحدة • رصد شبكة الطرق الحضرية الذكية (10 شوارع رئيسية متصلة)</p>
             </div>
         </div>

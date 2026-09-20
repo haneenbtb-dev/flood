@@ -273,6 +273,137 @@ st.markdown("""
         border-radius: 9999px;
     }
 
+    /* ------------------------------------------------------------- */
+    /* التجاوب الذكي مع كافة الشاشات (Mobile, iPad/Tablet, Laptop) */
+    /* ------------------------------------------------------------- */
+    
+    /* 1. الجوالات والشاشات الصغيرة (Mobile: أقل من 768px) */
+    @media (max-width: 768px) {
+        .block-container {
+            padding: 0.6rem 0.5rem !important;
+            max-width: 100% !important;
+        }
+
+        .ops-header {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0.75rem 0.9rem;
+            gap: 10px;
+        }
+
+        .ops-title {
+            font-size: 1.15rem;
+        }
+
+        .ops-subtitle {
+            font-size: 0.72rem;
+        }
+
+        .time-chip, .badge-live-pulse {
+            font-size: 0.72rem;
+            padding: 4px 8px;
+        }
+
+        .kpi-container {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 6px;
+        }
+
+        .kpi-card {
+            padding: 0.6rem 0.7rem;
+        }
+
+        .kpi-val {
+            font-size: 1.25rem;
+        }
+
+        .kpi-label {
+            font-size: 0.68rem;
+        }
+
+        .critical-alert-banner {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.8rem;
+            padding: 8px 12px;
+        }
+
+        iframe {
+            height: 380px !important;
+        }
+
+        .streets-table-container {
+            padding: 0.6rem 0.7rem;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 6px 8px;
+            font-size: 0.72rem;
+        }
+
+        .mini-progress-bg {
+            width: 45px;
+        }
+    }
+
+    /* 2. الأجهزة اللوحية والآيباد (Tablets & iPads: من 769px إلى 1024px) */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .block-container {
+            padding: 1rem 1.2rem !important;
+        }
+
+        .kpi-container {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 8px;
+        }
+
+        iframe {
+            height: 480px !important;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 7px 10px;
+            font-size: 0.78rem;
+        }
+    }
+
+    /* 3. شاشات اللابتوب والكمبيوتر المكتبي (Laptops & Desktops: أكبر من 1024px) */
+    @media (min-width: 1025px) {
+        .kpi-container {
+            grid-template-columns: repeat(7, 1fr) !important;
+            gap: 10px;
+        }
+
+        iframe {
+            height: 560px !important;
+        }
+    }
+
+    .sensor-online {
+        color: #34d399;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .mini-progress-bg {
+        background: rgba(51, 65, 85, 0.5);
+        height: 6px;
+        width: 75px;
+        border-radius: 9999px;
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+
+    .mini-progress-bar {
+        height: 100%;
+        border-radius: 9999px;
+    }
+
     /* وسائل التحكم البسيطة */
     .controls-strip {
         background: rgba(15, 23, 42, 0.8);

@@ -1,4 +1,5 @@
 import datetime
+import textwrap
 import streamlit as st
 import folium
 from folium import plugins
@@ -17,9 +18,8 @@ st.set_page_config(
 # تخصيص الواجهة بتنسيق عصري داكن وخطوط عربية احترافية مع دعم اتجاه النص من اليمين لليسار (RTL)
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
-    /* الخط والاتجاه العام */
     html, body, [class*="css"], .stMarkdown, .stButton, .stSelectbox, .stSlider {
         font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif !important;
         direction: rtl;
@@ -276,37 +276,38 @@ st.markdown("""
         background: rgba(15, 23, 42, 0.85);
         border: 1px solid rgba(51, 65, 85, 0.5);
         border-radius: 12px;
-        padding: 1rem 1.25rem;
+        padding: 0.75rem 1rem;
         direction: rtl;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     .log-item {
         font-size: 0.85rem;
-        padding: 9px 12px;
-        border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+        padding: 8px 12px;
+        background: rgba(30, 41, 59, 0.4);
+        border-radius: 8px;
         display: flex;
         align-items: center;
-        gap: 14px;
-    }
-
-    .log-item:last-child {
-        border-bottom: none;
+        gap: 12px;
     }
 
     .log-time {
-        font-family: 'JetBrains Mono', 'Cairo', monospace;
-        color: #64748b;
-        min-width: 90px;
+        font-family: 'JetBrains Mono', monospace;
+        color: #94a3b8;
+        min-width: 85px;
         direction: ltr;
-        text-align: right;
+        text-align: center;
+        font-size: 0.8rem;
     }
 
     .log-tag {
         font-weight: 800;
         font-size: 0.75rem;
-        padding: 3px 10px;
+        padding: 2px 8px;
         border-radius: 6px;
-        min-width: 85px;
+        min-width: 80px;
         text-align: center;
     }
 
@@ -321,7 +322,6 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* تعديل شريط التمرير الجانبي والقوائم */
     section[data-testid="stSidebar"] {
         direction: rtl;
         text-align: right;
@@ -334,7 +334,7 @@ st.markdown("""
 # 2. لوحة التحكم الجانبية ومحاكاة البيانات الحية (Sidebar)
 # -----------------------------------------------------------------------------
 with st.sidebar:
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
             <span style="font-size:1.8rem;">🎛️</span>
             <div>
@@ -342,9 +342,8 @@ with st.sidebar:
                 <span style="color:#64748b; font-size:0.75rem;">بيانات إنترنت الأشياء (IoT) والتحكم الميداني</span>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
-    # سيناريوهات سريعة وجاهزة للعرض والتقديم
     preset = st.selectbox(
         "⚡ سيناريوهات العرض السريع",
         options=[
@@ -377,7 +376,6 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("##### ⚙️ القياسات البيئية المرافقة")
     
-    # حساب ديناميكي لمعدل الهطول ومعدل التراكم
     if water_depth < 12:
         rain_label = "أمطار خفيفة (4 ملم/س)"
         rate_val = round(water_depth * 0.08 + 0.2, 1)
@@ -414,13 +412,13 @@ with st.sidebar:
     sms_broadcast = st.toggle("📡 إرسال رسائل التحذير العامة (SMS Broadcast)", value=(water_depth >= 25))
     variable_signs = st.toggle("🪧 تفعيل لوحات الرسائل المتغيرة على الطرق (VMS)", value=(water_depth >= 12))
 
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
         <div style="background:rgba(30,41,59,0.5); padding:10px; border-radius:8px; margin-top:20px; font-size:0.75rem; color:#94a3b8; border:1px solid rgba(75,85,99,0.2);">
             <b>معرّف شبكة الحساسات:</b> SG-RIYADH-402<br>
             <b>معدل التحديث:</b> كل 1 ثانية<br>
             <b>العقدة الميدانية:</b> نفق القطاع الشمالي
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 
 # -----------------------------------------------------------------------------
@@ -428,7 +426,6 @@ with st.sidebar:
 # -----------------------------------------------------------------------------
 now_str = datetime.datetime.now().strftime("%Y-%m-%d | %H:%M:%S")
 
-# تحديد ألوان وحالات الطريق والمسارات
 if water_depth < 12:
     status_label = "الطريق آمن وسالك تماماً"
     status_color = "#10b981"
@@ -451,8 +448,7 @@ else:
     status_icon = "🔴"
     status_level = "خطر وسيول (أحمر)"
 
-# الشريط الرئاسي العلوي
-st.markdown(f"""
+st.markdown(textwrap.dedent(f"""
     <div class="command-header">
         <div class="header-title-container">
             <span class="header-icon">🛡️</span>
@@ -469,11 +465,10 @@ st.markdown(f"""
             <div class="time-badge">🕒 {now_str}</div>
         </div>
     </div>
-""", unsafe_allow_html=True)
+"""), unsafe_allow_html=True)
 
-# لافتة التنبيه العاجل عند وصول الحالة إلى الخطر (أحمر)
 if "أحمر" in status_level:
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="emergency-banner">
             <div style="display:flex; align-items:center; gap:14px;">
                 <span style="font-size:1.8rem;">⚠️</span>
@@ -486,7 +481,7 @@ if "أحمر" in status_level:
                 كود الإنذار: FLOOD-LVL-3
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 
 # -----------------------------------------------------------------------------
@@ -496,7 +491,7 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     depth_delta_color = "#34d399" if water_depth < 12 else ("#fbbf24" if water_depth < 25 else "#f87171")
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="metric-card">
             <div class="metric-label">🌊 منسوب المياه المباشر</div>
             <div class="metric-value" style="color:{depth_delta_color};">
@@ -506,11 +501,11 @@ with col1:
                 <span>الحد الآمن: أقل من 12 سم</span> • <span>الأقصى: 50 سم</span>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 with col2:
     rain_color = "#38bdf8" if "خفيف" in rain_class else ("#facc15" if "متوسط" in rain_class else "#f87171")
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="metric-card">
             <div class="metric-label">🌧️ كثافة هطول الأمطار</div>
             <div class="metric-value" style="font-size:1.45rem; color:{rain_color};">
@@ -520,11 +515,11 @@ with col2:
                 <span>رادار الدوبلر الميداني</span>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 with col3:
     rate_color = "#34d399" if accumulation_rate < 1.0 else ("#fbbf24" if accumulation_rate < 3.0 else "#f87171")
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="metric-card">
             <div class="metric-label">⚡ معدل تدفق وتراكم المياه</div>
             <div class="metric-value" style="color:{rate_color};">
@@ -534,10 +529,10 @@ with col3:
                 <span>الجريان السطحي والسيول</span>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 with col4:
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="metric-card" style="border-right: 4px solid {status_color};">
             <div class="metric-label">🚦 حالة الشريان المروري الرئيسي</div>
             <div class="metric-value" style="font-size:1.25rem; color:{status_color}; font-weight:900;">
@@ -547,7 +542,7 @@ with col4:
                 <span>{status_label}</span>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
@@ -557,10 +552,8 @@ st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 # -----------------------------------------------------------------------------
 map_col, vehicle_col = st.columns([1.65, 1.0])
 
-# إحداثيات طريق رئيسي في المدينة ومسار التحويلة
-CITY_CENTER = [24.7136, 46.6753]  # الرياض - طريق رئيسي ونفق منخفض
+CITY_CENTER = [24.7136, 46.6753]
 
-# مسار الطريق الرئيسي المعرض لتجمع السيول (نفق منخفض)
 main_road_coords = [
     [24.7080, 46.6700],
     [24.7105, 46.6725],
@@ -570,10 +563,8 @@ main_road_coords = [
     [24.7195, 46.6815]
 ]
 
-# موقع محطة حساس المنسوب
 sensor_location = [24.7136, 46.6756]
 
-# مسار الطريق البديل المرتفع والآمن تماماً (التحويلة الزرقاء)
 detour_route_coords = [
     [24.7080, 46.6700],
     [24.7065, 46.6740],
@@ -586,7 +577,6 @@ detour_route_coords = [
 with map_col:
     st.markdown("### 🗺️ الخريطة الجغرافية الحية والتوجيه الملاحي الذكي")
     
-    # خريطة بنمط داكن يناسب مراكز التحكم الذكية
     m = folium.Map(
         location=CITY_CENTER,
         zoom_start=15,
@@ -594,7 +584,6 @@ with map_col:
         control_scale=True
     )
 
-    # 1. رسم مسار الطريق الرئيسي وتلوينه ديناميكياً
     road_tooltip_msg = f"<b>طريق الملك فهد الرئيسي (قطاع النفق)</b><br>منسوب المياه الحالي: {water_depth} سم<br>الحالة: {status_label}"
     
     folium.PolyLine(
@@ -613,7 +602,6 @@ with map_col:
         """, max_width=320)
     ).add_to(m)
 
-    # 2. إضافة أيقونة حساس إنترنت الأشياء
     sensor_icon_color = "green" if water_depth < 12 else ("orange" if water_depth < 25 else "red")
     
     folium.Marker(
@@ -632,7 +620,6 @@ with map_col:
         icon=folium.Icon(color=sensor_icon_color, icon="tint", prefix="fa")
     ).add_to(m)
 
-    # 3. مؤشر التحذير الميداني الديناميكي (عند تجاوز 12 سم)
     if water_depth >= 12:
         warning_icon = "exclamation-triangle" if water_depth < 25 else "ban"
         folium.Marker(
@@ -649,7 +636,6 @@ with map_col:
             icon=folium.Icon(color="red" if water_depth >= 25 else "orange", icon=warning_icon, prefix="fa")
         ).add_to(m)
 
-    # 4. رسم المسار البديل الآمن (خط أزرق متقطع عند وصول الحالة للون الأحمر / ≥ 25 سم)
     if water_depth >= 25:
         folium.PolyLine(
             locations=detour_route_coords,
@@ -669,7 +655,6 @@ with map_col:
             """, max_width=320)
         ).add_to(m)
 
-        # إضافة أعلام بداية ونهاية التحويلة
         folium.Marker(
             location=detour_route_coords[1],
             tooltip="نقطة الدخول للمسار البديل (جسر علوي)",
@@ -682,28 +667,24 @@ with map_col:
             icon=folium.Icon(color="blue", icon="check", prefix="fa")
         ).add_to(m)
 
-    # أدوات تكبير وتوسيع الخريطة
     plugins.Fullscreen(position="topleft").add_to(m)
     
-    # عرض خريطة Folium في Streamlit
     st_folium(m, width="100%", height=490, returned_objects=[])
 
-    # دليل ألوان الخريطة
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
         <div style="display:flex; justify-content:space-around; background:rgba(15,23,42,0.7); padding:8px 12px; border-radius:8px; border:1px solid rgba(51,65,85,0.4); font-size:0.8rem; margin-top:8px;">
             <div style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:12px; height:12px; background:#10b981; border-radius:2px;"></span> أخضر: آمن (< 12 سم)</div>
             <div style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:12px; height:12px; background:#f59e0b; border-radius:2px;"></span> برتقالي: حذر (12-24 سم)</div>
             <div style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:12px; height:12px; background:#ef4444; border-radius:2px;"></span> أحمر: مغلق وسيول (≥ 25 سم)</div>
             <div style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:16px; height:3px; background:#38bdf8; border-top:2px dashed #38bdf8;"></span> خط أزرق متقطع: مسار بديل</div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 
 with vehicle_col:
     st.markdown("### 🚘 مصفوفة أمان وعبور المركبات")
 
     # 1. سيارات السيدان والمركبات الصغيرة
-    # آمن < 12 سم، تحذير 12-18 سم، ممنوع > 18 سم
     if water_depth < 12:
         sedan_status = "✅ آمن للعبور"
         sedan_class = "status-safe"
@@ -726,8 +707,7 @@ with vehicle_col:
         sedan_desc = "خطر دخول المياه لمحرك السيارة (Hydro-lock) وانجراف المركبة."
         sedan_pct = 100
 
-    # 2. سيارات الدفع الرباعي والـ SUV
-    # آمن < 25 سم، تحذير 25-35 سم، خطر > 35 سم
+    # 2. سيارات الدفع الرباعي
     if water_depth < 25:
         suv_status = "✅ آمن للعبور"
         suv_class = "status-safe"
@@ -750,8 +730,7 @@ with vehicle_col:
         suv_desc = "خطر فقدان التحكم والطفو بسبب شدة منسوب المياه."
         suv_pct = 100
 
-    # 3. الشاحنات ومركبات الإسعاف والطوارئ
-    # آمن حتى 40 سم، تحذير 40-48 سم، خطر > 48 سم
+    # 3. الشاحنات وفرق الطوارئ
     if water_depth <= 40:
         truck_status = "✅ مسار مسموح للطوارئ"
         truck_class = "status-safe"
@@ -774,8 +753,7 @@ with vehicle_col:
         truck_desc = "تيارات السيول تجاوزت قدرة التحمل لجميع المركبات الثقيلة."
         truck_pct = 100
 
-    # بطاقة سيارات السيدان
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="vehicle-card {sedan_class}">
             <div class="vehicle-header">
                 <span class="vehicle-title">🚗 سيارات السيدان والصغيرة</span>
@@ -790,10 +768,9 @@ with vehicle_col:
                 <div class="clearance-fill" style="width:{sedan_pct}%; background-color:{sedan_fill_color};"></div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
-    # بطاقة سيارات الدفع الرباعي
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="vehicle-card {suv_class}">
             <div class="vehicle-header">
                 <span class="vehicle-title">🚙 سيارات الدفع الرباعي والـ SUV</span>
@@ -808,13 +785,12 @@ with vehicle_col:
                 <div class="clearance-fill" style="width:{suv_pct}%; background-color:{suv_fill_color};"></div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
-    # بطاقة الشاحنات وفرق الطوارئ
-    st.markdown(f"""
+    st.markdown(textwrap.dedent(f"""
         <div class="vehicle-card {truck_class}">
             <div class="vehicle-header">
-                <span class="vehicle-title">🚚 الشاحنات وآليات الطوارئ والدفاع المدني</span>
+                <span class="vehicle-title">🚚 الشاحنات وآليات الدفاع المدني</span>
                 <span class="badge-pill {truck_badge_class}">{truck_status}</span>
             </div>
             <div style="font-size:0.83rem; color:#cbd5e1; line-height:1.4;">{truck_desc}</div>
@@ -826,7 +802,7 @@ with vehicle_col:
                 <div class="clearance-fill" style="width:{truck_pct}%; background-color:{truck_fill_color};"></div>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
 
 # -----------------------------------------------------------------------------
@@ -896,16 +872,11 @@ logs.append({
     "msg": "معايرة حساسات الرادار والألتراسونيك SG-402 بنجاح، ومعدل إرسال البيانات كل ثانية واحدة."
 })
 
-# بناء جدول السجل الأنيق
-log_html = "<div class='log-container'>"
+# بناء جدول السجل الأنيق بدون مسافات بادئة تسبب مشاكل كود الماركداون
+log_items_html = ""
 for log in logs:
-    log_html += f"""
-        <div class="log-item">
-            <span class="log-time">{log['time']}</span>
-            <span class="log-tag {log['tag_class']}">{log['tag']}</span>
-            <span class="log-message">{log['msg']}</span>
-        </div>
-    """
-log_html += "</div>"
+    log_items_html += f'<div class="log-item"><span class="log-time">{log["time"]}</span><span class="log-tag {log["tag_class"]}">{log["tag"]}</span><span class="log-message">{log["msg"]}</span></div>'
 
-st.markdown(log_html, unsafe_allow_html=True)
+log_wrapper_html = f'<div class="log-container">{log_items_html}</div>'
+
+st.markdown(log_wrapper_html, unsafe_allow_html=True)
